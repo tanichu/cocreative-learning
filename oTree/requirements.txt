@@ -1,0 +1,8 @@
+# oTree-may-not-overwrite-this-file
+otree==5.10.4
+psycopg2>=2.8.4
+sentry-sdk>=0.7.9
+Jinja2==2.11.3
+numpy==1.23.5
+-f https://download.pytorch.org/whl/torch_stable.html
+torch==2.0.1+cpu
