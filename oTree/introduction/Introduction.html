@@ -1,0 +1,25 @@
+
+{{ block title }}
+    研究の説明</p>
+<p>以下にこの研究の説明文があります。内容をよく読んで頂き、同意が頂けるようであれば「同意する」を、同意いただけないようであれば「同意しない」をクリックしてください。研究の内容に同意頂けた場合のみ、実験ページに進みます。</p>
+<br>
+{{ endblock }}
+
+{{ block scripts }}
+    <style type="text/css">
+        body {
+            transform: scale(0.75); /* 1.5は拡大率です。必要に応じて変更してください。 */
+            transform-origin: 0 0; /* 変換の原点を左上に設定 */
+        }
+    </style>
+{{ endblock }}
+
+{{ block content }}
+<iframe src="https://drive.google.com/file/d/1reuA4eyUZZZhorp5Zqe25-eDMhYK_zew/preview" width="100%" height="500px"></iframe>
+<br>
+
+<button name="is_accepted" value="True">同意する</button>
+<button name="is_accepted" value="False">同意しない</button>
+
+
+{{ endblock }}

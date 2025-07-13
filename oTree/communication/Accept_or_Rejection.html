@@ -1,0 +1,408 @@
+
+{{ block title }}
+相手は右の画像を{{player.com_sign}}と言いました．<p/>
+名前を受け入れるかどうかを選んで下さい．<p/>
+<p id="err_text" style="color:red"><p/>
+{{ endblock }}
+
+{{ block content }}
+<div id="pic"></div
+<div class="drag-and-drop" id="Image1"></div>
+
+<label for="progr">進歩状況:</label>
+<progress id="progr" value="100" max="201">progr</progress>
+
+
+<button type="submit" class="accept" name="my_accept" value="1" id="accept">
+        <font>受け入れる</font>
+</button>
+
+<button type="submit" class="reject" name="my_accept" value="0" id="reject">
+        <font>拒否する</font>
+</button>
+
+
+<input type="hidden" name="img0_sign" id="img0_sign" />
+<input type="hidden" name="img1_sign" id="img1_sign" />
+<input type="hidden" name="img2_sign" id="img2_sign" />
+<input type="hidden" name="img3_sign" id="img3_sign" />
+<input type="hidden" name="img4_sign" id="img4_sign" />
+<input type="hidden" name="img5_sign" id="img5_sign" />
+<input type="hidden" name="img6_sign" id="img6_sign" />
+<input type="hidden" name="img7_sign" id="img7_sign" />
+<input type="hidden" name="img8_sign" id="img8_sign" />
+<input type="hidden" name="img9_sign" id="img9_sign" />
+
+<input type="hidden" name="order_A0" id="order_A0" value="99"/>
+<input type="hidden" name="order_A1" id="order_A1" value="99"/>
+<input type="hidden" name="order_A2" id="order_A2" value="99"/>
+<input type="hidden" name="order_A3" id="order_A3" value="99"/>
+<input type="hidden" name="order_A4" id="order_A4" value="99"/>
+<input type="hidden" name="order_A5" id="order_A5" value="99"/>
+<input type="hidden" name="order_A6" id="order_A6" value="99"/>
+<input type="hidden" name="order_A7" id="order_A7" value="99"/>
+<input type="hidden" name="order_A8" id="order_A8" value="99"/>
+<input type="hidden" name="order_A9" id="order_A9" value="99"/>
+
+<input type="hidden" name="order_B0" id="order_B0" value="99"/>
+<input type="hidden" name="order_B1" id="order_B1" value="99"/>
+<input type="hidden" name="order_B2" id="order_B2" value="99"/>
+<input type="hidden" name="order_B3" id="order_B3" value="99"/>
+<input type="hidden" name="order_B4" id="order_B4" value="99"/>
+<input type="hidden" name="order_B5" id="order_B5" value="99"/>
+<input type="hidden" name="order_B6" id="order_B6" value="99"/>
+<input type="hidden" name="order_B7" id="order_B7" value="99"/>
+<input type="hidden" name="order_B8" id="order_B8" value="99"/>
+<input type="hidden" name="order_B9" id="order_B9" value="99"/>
+
+<input type="hidden" name="order_C0" id="order_C0" value="99"/>
+<input type="hidden" name="order_C1" id="order_C1" value="99"/>
+<input type="hidden" name="order_C2" id="order_C2" value="99"/>
+<input type="hidden" name="order_C3" id="order_C3" value="99"/>
+<input type="hidden" name="order_C4" id="order_C4" value="99"/>
+<input type="hidden" name="order_C5" id="order_C5" value="99"/>
+<input type="hidden" name="order_C6" id="order_C6" value="99"/>
+<input type="hidden" name="order_C7" id="order_C7" value="99"/>
+<input type="hidden" name="order_C8" id="order_C8" value="99"/>
+<input type="hidden" name="order_C9" id="order_C9" value="99"/>
+{{ endblock }}
+
+{{ block scripts }}
+    <script>
+        const testlist = js_vars.testlist;    // js_vars から 自分が定義した testlist を取り出す．
+        // リストの要素を一つずつ console.log する．
+    </script>
+{{ endblock }}
+
+
+
+{{ block scripts }}
+    <style type="text/css">
+    .drag-and-drop {
+        cursor: move;
+        position: absolute;
+        z-index: 1000;
+    }
+
+    .drag {
+        z-index: 1001;
+    }
+        
+    .otree-btn-next {
+        width: 80px;
+        height: 40px;
+        position:absolute;
+        top:80px;
+        left:0px;
+    }
+    .accept{
+        width: 100px;
+        height: 40px;
+        position:relative;
+        top:-100px;
+        left:500px;
+    }
+    .reject{
+        width: 100px;
+        height: 40px;
+        position:relative;
+        top:-30px;
+        left:395px;
+    }
+
+        body {
+            transform: scale(0.75); /* 1.5は拡大率です。必要に応じて変更してください。 */
+            transform-origin: 0 0; /* 変換の原点を左上に設定 */
+        }
+    </style>
+
+    <script>
+    progr=document.getElementById(`progr`);
+    progr.value=js_vars.progr
+    
+    var order_list = js_vars.prev_order_list
+    var data_i=js_vars.data_i
+    console.log(order_list)
+    for (var j = 0; j<3; j++) {
+        order_list[j] = order_list[j].filter(function(item) {
+            return item !== "99";
+        });
+      }
+    console.log(order_list)
+    
+    var order=[[],[],[]],img_sign=[],com_img_cat=[],com_img_sign=[];
+    for(var i=0;i<10;i++){
+        order[0][i] = document.getElementById(`order_A${i}`);
+        order[1][i] = document.getElementById(`order_B${i}`);
+        order[2][i] = document.getElementById(`order_C${i}`);
+    }
+    for(var i=0;i<10;i++){
+        img_sign[i] = document.getElementById(`img${i}_sign`);
+        com_img_cat[i] = document.getElementById(`com_img${i}_cat`);
+        com_img_sign[i] = document.getElementById(`com_img${i}_sign`);
+    }
+        
+        var   url=["https://i.imgur.com/VDK0xbg.png","https://i.imgur.com/ip9ZMUU.png","https://i.imgur.com/tX3JKfm.png","https://i.imgur.com/MQUpQOo.png","https://i.imgur.com/Slxpyfi.png","https://i.imgur.com/XNir4Cd.png","https://i.imgur.com/9USAfaS.png","https://i.imgur.com/JfkPgef.png","https://i.imgur.com/SaAkqjs.png","https://i.imgur.com/eYb6qRf.png"];//dataset11
+        //var   url=["https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png","https://i.imgur.com/twJfzXJ.png"];//ダミーデータ
+
+    img=new Image();//提示される画像
+    img.src=url[data_i];
+    
+    const canvas = document.createElement('canvas');
+    canvas.width = 1850;
+    canvas.height = 710;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    
+    // canvas内をせいり
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.strokeRect(499,199,202,502);
+    ctx.strokeRect(749,199,202,502);
+    ctx.strokeRect(999,199,202,502);
+    ctx.strokeRect(1300,150,500,500);
+    
+    ctx.font = "48px serif";
+    ctx.fillText("A", 600-20, 170);
+    ctx.fillText("B", 850-20, 170);
+    ctx.fillText("C", 1100-20, 170);
+    
+    var loadedCount = 0;//初期位置
+    var imgArray = new Array();
+    for(let i=0;i<10;i++){
+        
+        imgArray[i]=new Image();
+        imgArray[i].src=url[i];
+            if (++loadedCount == imgArray.length) {
+                var x = 500;
+                var y = 0;
+                var w = 100;
+                var h = 100;
+                for (var j in imgArray) {
+                    // 画像を描画した時の情報を記憶（Imageのプロパティに突っ込むのはちょっと反則かもだけど）
+                    imgArray[j].drawOffsetX = x;
+                    imgArray[j].drawOffsetY = y;
+                    imgArray[j].drawWidth   = w;
+                    imgArray[j].drawHeight  = h;
+                }
+            }
+    }
+    
+    window.addEventListener('load', function(){
+    ctx.drawImage(img, 1300, 150, 500, 500);
+    for (var i = 0; i<3; i++) {
+        for (var j in order_list[i]) {
+            var x = 500+(i*250)+(j%2)*100;
+            var y = 200+(parseInt(j/2))*100;
+            var w = 150;
+            var h = 100;
+            imgArray[order_list[i][j]].drawOffsetX = x;
+            imgArray[order_list[i][j]].drawOffsetY = y;
+            
+            w = imgArray[order_list[i][j]].drawWidth;
+            h = imgArray[order_list[i][j]].drawHeight;
+
+            // 画像を描画
+            ctx.drawImage(imgArray[order_list[i][j]], x, y, w, h);
+        }
+        
+    }
+    for (var i in imgArray) {//オーダーリストにないものの描画
+        if (!order_list[0].includes(String(i)) && !order_list[1].includes(String(i)) && !order_list[2].includes(String(i))){
+            imgArray[i].drawOffsetX=500+i*100;
+            imgArray[i].drawOffsetY=0;
+            x=imgArray[i].drawOffsetX
+            y=imgArray[i].drawOffsetY
+            w = imgArray[i].drawWidth;
+            h = imgArray[i].drawHeight;
+            // 画像を描画
+            ctx.drawImage(imgArray[i], x, y, w, h);
+            img_sign[Number(i)].value=99 //参加者のサイン記録
+            }
+        }
+        for(var i=0;i<3;i++){
+            for(var j=0;j<order_list[i].length;j++){
+                order[i][j].value=order_list[i][j]; //順番記録
+                img_sign[order_list[i][j]].value=i //参加者のサイン記録
+            }
+            for(var j=order_list[i].length;j<10;j++){
+                order[i][j].value=99;
+            }
+        }
+    });
+    
+    var isDragging = false;
+    var dragTarget = null; // ドラッグ対象の画像の添え字
+
+
+    // ドラッグ開始
+    var mouseDown = function(e) {
+        // ドラッグ開始位置
+        var posX = parseInt((e.clientX*(1/0.75) - canvas.offsetLeft));
+        var posY = parseInt((e.clientY*(1/0.75) - canvas.offsetTop));
+
+        for (var i = imgArray.length - 1; i >= 0; i--) {
+            // 当たり判定（ドラッグした位置が画像の範囲内に収まっているか）
+            if (posX >= imgArray[i].drawOffsetX &&
+                posX <= (imgArray[i].drawOffsetX + imgArray[i].drawWidth) &&
+                posY >= imgArray[i].drawOffsetY &&
+                posY <= (imgArray[i].drawOffsetY + imgArray[i].drawHeight)
+            ) {
+              dragTarget = i;
+              // ドラッグ中のものをリストから消す
+              for (var j = 0; j<3; j++) {
+                  order_list[j] = order_list[j].filter(function(item) {
+                      return item !== String(i);
+                  });
+                  console.log(order_list[j]);
+                }
+              isDragging = true;
+              break;
+            }
+        }
+    }
+
+    // ドラッグ終了
+    var mouseUp = function(e) {
+        isDragging = false;
+        if (dragTarget !== null){
+            if (imgArray[dragTarget].drawOffsetY >= 200 && imgArray[dragTarget].drawOffsetX >=500 && imgArray[dragTarget].drawOffsetX <=700){
+                order_list[0].push(String(dragTarget))
+                console.log(order_list);
+            }else if(imgArray[dragTarget].drawOffsetY >= 200 && imgArray[dragTarget].drawOffsetX >=750 && imgArray[dragTarget].drawOffsetX <=950){
+                order_list[1].push(String(dragTarget))
+            }else if(imgArray[dragTarget].drawOffsetY >= 200 && imgArray[dragTarget].drawOffsetX >=1000 && imgArray[dragTarget].drawOffsetX <=1200){
+                order_list[2].push(String(dragTarget))
+            }
+        }
+        dragTarget=null;
+        // canvas内をせいり
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.strokeRect(499,199,202,502);
+        ctx.strokeRect(749,199,202,502);
+        ctx.strokeRect(999,199,202,502);
+        ctx.strokeRect(1300,150,500,500);
+        ctx.drawImage(img, 1300, 150, 500, 500);
+        ctx.font = "48px serif";
+        ctx.fillText("A", 600-20, 170);
+        ctx.fillText("B", 850-20, 170);
+        ctx.fillText("C", 1100-20, 170);
+        
+        for (var i = 0; i<3; i++) {
+            for (var j in order_list[i]) {
+                var x = 500+(i*250)+(j%2)*100;
+                var y = 200+(parseInt(j/2))*100;
+                var w = 150;
+                var h = 100;
+                imgArray[order_list[i][j]].drawOffsetX = x;
+                imgArray[order_list[i][j]].drawOffsetY = y;
+                
+                w = imgArray[order_list[i][j]].drawWidth;
+                h = imgArray[order_list[i][j]].drawHeight;
+
+                // 画像を描画
+                ctx.drawImage(imgArray[order_list[i][j]], x, y, w, h);
+            }
+            
+        }
+        loss_cnt=0;
+        for (var i in imgArray) {//オーダーリストにないものの描画
+            if (!order_list[0].includes(String(i)) && !order_list[1].includes(String(i)) && !order_list[2].includes(String(i))){
+                imgArray[i].drawOffsetX=500+i*100;
+                imgArray[i].drawOffsetY=0;
+                x=imgArray[i].drawOffsetX
+                y=imgArray[i].drawOffsetY
+                w = imgArray[i].drawWidth;
+                h = imgArray[i].drawHeight;
+                // 画像を描画
+                ctx.drawImage(imgArray[i], x, y, w, h);
+                img_sign[Number(i)].value=99 //参加者のサイン記録
+                loss_cnt++;
+                }
+            }
+        
+        for(var i=0;i<3;i++){
+            for(var j=0;j<order_list[i].length;j++){
+                order[i][j].value=order_list[i][j]; //順番記録
+                img_sign[order_list[i][j]].value=i //参加者のサイン記録
+            }
+            for(var j=order_list[i].length;j<10;j++){
+                order[i][j].value=99;
+            }
+        }
+        
+        //分類してないものがある場合の処理
+        if(loss_cnt>0){
+            document.getElementById(`err_text`).innerHTML = "分類できていない画像があります．";
+            document.getElementById(`accept`).style="visibility: hidden"
+            document.getElementById(`reject`).style="visibility: hidden"
+        }else{
+            err_text.innerHTML = "";
+            document.getElementById(`accept`).style="visibility: visibl"
+            document.getElementById(`reject`).style="visibility: visibl"
+            
+        }
+        
+    };
+
+    // canvasの枠から外れた
+    var mouseOut = function(e) {
+        // canvas外にマウスカーソルが移動した場合に、ドラッグ終了としたい場合はコメントインする
+        // mouseUp(e);
+    }
+
+    // ドラッグ中
+    var mouseMove = function(e) {
+        // ドラッグ終了位置
+        var posX = parseInt((e.clientX*(1/0.75) - canvas.offsetLeft));
+        var posY = parseInt((e.clientY*(1/0.75) - canvas.offsetTop));
+
+        if (isDragging) {
+            // canvas内を一旦クリア
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.strokeRect(499,199,202,502);
+            ctx.strokeRect(749,199,202,502);
+            ctx.strokeRect(999,199,202,502);
+            ctx.strokeRect(1300,150,500,500);
+            ctx.drawImage(img, 1300, 150, 500, 500);
+            ctx.font = "48px serif";
+            ctx.fillText("A", 600-20, 170);
+            ctx.fillText("B", 850-20, 170);
+            ctx.fillText("C", 1100-20, 170);
+
+            var x = 0;
+            var y = 0;
+            var w = 150;
+            var h = 100;
+            for (var i in imgArray) {
+                if (i == dragTarget) {
+                    x = posX - imgArray[i].drawWidth / 2;
+                    y = posY - imgArray[i].drawHeight / 2;
+
+                    // ドラッグが終了した時の情報を記憶
+                    imgArray[i].drawOffsetX = x;
+                    imgArray[i].drawOffsetY = y;
+                } else {
+                    x = imgArray[i].drawOffsetX;
+                    y = imgArray[i].drawOffsetY;
+                }
+                w = imgArray[i].drawWidth;
+                h = imgArray[i].drawHeight;
+
+                // 画像を描画
+                ctx.drawImage(imgArray[i], x, y, w, h);
+            }
+        }
+    };
+
+    // canvasにイベント登録
+    canvas.addEventListener('mousedown', function(e){mouseDown(e);}, false);
+    canvas.addEventListener('mousemove', function(e){mouseMove(e);}, false);
+    canvas.addEventListener('mouseup',   function(e){mouseUp(e);},   false);
+    canvas.addEventListener('mouseout',  function(e){mouseOut(e);},  false);
+    </script>
+{{ endblock }}
+
+
+
+
+

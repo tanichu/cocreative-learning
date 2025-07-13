@@ -1,0 +1,20 @@
+{{ block title }}
+<p>研究にご参加いただきありがとうございます．</p>
+CrowdWorks ID，身体的性別（sex），年齢(age)を入力していただいた後，「次へ」をクリックして頂くと，実験のページに移ります．</p>
+{{ endblock }}
+{{ block scripts }}
+    <style type="text/css">
+        body {
+            transform: scale(0.75); /* 1.5は拡大率です。必要に応じて変更してください。 */
+            transform-origin: 0 0; /* 変換の原点を左上に設定 */
+        }
+    </style>
+{{ endblock }}
+{{ block content }}
+<input type="hidden" name="my_sign" id="my_sign" value="99"/>
+{{ formfields }}
+
+    {{ next_button }}
+{{ endblock }}
+
+

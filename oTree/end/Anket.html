@@ -1,0 +1,37 @@
+{{ block title }}
+    コミュニケーション実験は終了しました．</p>
+    最後にアンケートとして自由に感想や意見などを入力してください．</p>
+    今後の改善や分析に使用します．</p>
+    入力できたら送信するを押してください．</p>
+    　</p>
+    アンケート記入欄：
+{{ endblock }}
+
+{{ block content}}
+<textarea name="anket_" id="txt" class="txt"></textarea >
+</p>
+<p><input type="submit" class="button" value="送信する" id="button"></p>
+    
+{{ endblock }}
+
+{{ block scripts }}
+    <style type="text/css">
+    .button {
+        width: 80px;
+        height: 40px;
+        position:absolute;
+        top:950px;
+        left:1720px;}
+    .txt{
+            width: 1000px;
+            height: 500px;
+            position:absolute;
+            top:400px;
+            left:800px;}
+    </style>
+{{ endblock }}
+
+
+
+
+
